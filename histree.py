@@ -1,14 +1,20 @@
 import argparse
-import configparser
-from datatime import datetime
-import grp, pwd
-from fnmatch import fnmatch
-import hashlib
-from math import ceil
-import os
-import re
+from Repo import repo_create
 import sys
-import zlib
+
+argparser = argparse.ArgumentParser( description="Simple and stupid version " \
+                        "control system" )
+
+argsubparsers = argparser.add_subparsers( title="Commands", dest="command" )
+argsubparsers.required = True
+
+argsp = argsubparsers.add_parser( "init", help="Initialize a new, empty " \
+                                    "repository" )
+argsp.add_argument( "path", metavar="directory", nargs="?", default=",",
+                    help="path to create the repository at" )
+
+def cmd_init( args ):
+    repo_create( args.path )
 
 def main( argv=sys.argv[1:] ):
     args = argparser.parse_args( argv )
@@ -45,8 +51,3 @@ def main( argv=sys.argv[1:] ):
             cmd_tag( args )
         case _:
             print( "Bad command." )
-
-argparser = argparse.ArgumentParser( description="Simple and stupid version control system" )
-
-argsubparsers = argparser.add_subparsers( title="Commands", dest="command" )
-argsubparsers.required = True
